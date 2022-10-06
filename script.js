@@ -1,3 +1,5 @@
+console.log()
+
 const Button = $('#btn');
 const recentSearch = $('#recent-search');
 const recentList = $('#recent-list');
@@ -12,9 +14,27 @@ const day2 = $('#day-2');
 const day3 = $('#day-3');
 const day4 = $('#day-4');
 const day5 = $('#day-5');
+const dataFormEl = $('#data-submit');
+let locationSearch = document.getElementById("location").value
 
 
 const today = moment().format("MM-DD-YYYY")
 
-const apiKey = "379288c134bd33ff0ca6a16b87f06183";
 
+function getApi() {
+    // let weatherKey = '379288c134bd33ff0ca6a16b87f06183';
+    let geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid=379288c134bd33ff0ca6a16b87f06183';
+    let apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=379288c134bd33ff0ca6a16b87f06183';
+
+    // api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=379288c134bd33ff0ca6a16b87f06183
+
+    fetch(geoCall)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        console.log(data);
+      })};
+
+
+dataFormEl.on('submit', getApi);
