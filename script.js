@@ -14,16 +14,18 @@ const day2 = $('#day-2');
 const day3 = $('#day-3');
 const day4 = $('#day-4');
 const day5 = $('#day-5');
-let locationSearch = document.getElementById("location").value
+const locationSearch = $('location').text;
 
 
 const today = moment().format("MM-DD-YYYY")
 
 
 function getApi() {
-    // let weatherKey = '379288c134bd33ff0ca6a16b87f06183';
-    let geoCall = 'api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid=379288c134bd33ff0ca6a16b87f06183';
-    let apiCall = 'api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=379288c134bd33ff0ca6a16b87f06183';
+    let weatherKey = '&appid=379288c134bd33ff0ca6a16b87f06183';
+    let limit5 = '&limit=5';
+    let geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationSearch+limit5+weatherKey;
+
+    let apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=379288c134bd33ff0ca6a16b87f06183';
 
     // api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=379288c134bd33ff0ca6a16b87f06183
 
@@ -45,4 +47,4 @@ function getApi() {
     }
 
 
-Button.addEventListener('click', getApi);
+Button.on('click', getApi());
