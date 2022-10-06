@@ -14,8 +14,8 @@ const day2 = $('#day-2');
 const day3 = $('#day-3');
 const day4 = $('#day-4');
 const day5 = $('#day-5');
-const locationSearch = $('location').text;
-
+const locationSearch = $('#location').val();
+console.log(locationSearch);
 
 const today = moment().format("MM-DD-YYYY")
 
@@ -23,7 +23,7 @@ const today = moment().format("MM-DD-YYYY")
 function getApi() {
     let weatherKey = '&appid=379288c134bd33ff0ca6a16b87f06183';
     let limit5 = '&limit=5';
-    let geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationSearch+limit5+weatherKey;
+    let geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q=London&appid=379288c134bd33ff0ca6a16b87f06183';
 
     let apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=379288c134bd33ff0ca6a16b87f06183';
 
