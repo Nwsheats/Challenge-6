@@ -1,5 +1,5 @@
 console.log()
-const Button = $('#btn');
+const button = $('#btn');
 const dataFormEl = document.getElementById('data-submit');
 const recentSearch = $('#recent-search');
 const recentList = $('#recent-list');
@@ -14,37 +14,41 @@ const day2 = $('#day-2');
 const day3 = $('#day-3');
 const day4 = $('#day-4');
 const day5 = $('#day-5');
-const locationSearch = $('#location').val();
-console.log(locationSearch);
+
 
 const today = moment().format("MM-DD-YYYY")
 
 
-function getApi() {
-    let weatherKey = '&appid=379288c134bd33ff0ca6a16b87f06183';
-    let limit5 = '&limit=5';
-    let geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q=London&appid=379288c134bd33ff0ca6a16b87f06183';
-
-    let apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=379288c134bd33ff0ca6a16b87f06183';
-
-    // api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=379288c134bd33ff0ca6a16b87f06183
-
+function getApi(event) {
+    event.preventDefault();
+    let locationSearch = $('#location').val();
+    console.log(locationSearch);
+    let geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationSearch+'&appid=379288c134bd33ff0ca6a16b87f06183';
+    console.log(geoCall);
+    
     fetch(geoCall)
       .then(function (response) {
         return response.json();
       })
       .then(function (data) {
         console.log(data);
+        getForecast(data)
       })
-
-    //   fetch(apiCall)
-    //   .then(function (response) {
-    //     return response.json();
-    //   })
-    //   .then(function (data) {
-    //     console.log(data);
-    //   })
     }
 
+function getForecast(locationData) {
+  console.log(locationData);
+  const latitude = locationData[0].lat;
+  const longitude = locationData[0].lon;
+  let apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=379288c134bd33ff0ca6a16b87f06183';
 
-Button.on('click', getApi());
+    fetch(apiCall)
+    .then(function (response) {
+    return response.json();
+    })
+    .then(function (data) {
+    console.log(data);
+    })
+}
+
+button.on('click', getApi);
