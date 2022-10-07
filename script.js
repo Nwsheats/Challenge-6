@@ -14,6 +14,11 @@ const day2 = $('#day-2');
 const day3 = $('#day-3');
 const day4 = $('#day-4');
 const day5 = $('#day-5');
+const date1 = $('#date-1');
+const date2 = $('#date-2');
+const date3 = $('#date-3');
+const date4 = $('#date-4');
+const date5 = $('#date-5');
 
 const days = [day1, day2, day3, day4, day5];
 
