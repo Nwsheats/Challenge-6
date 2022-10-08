@@ -24,6 +24,11 @@ const daysLater = moment().add(4, 'days').format("MM-DD-YYYY");
 const days = [day1, day2, day3, day4, day5];
 const fiveDay = [today, tomorrow, dayAfterTomorrow, dayAfterThat, daysLater];
 
+let storageArray = [];
+
+// $(window).load(function() {
+  
+// });
 
 function getApi(event) {
     event.preventDefault();
@@ -41,6 +46,8 @@ function getApi(event) {
         getForecast(data);
       })
     }
+
+//local storage: locationSearch, latitude, and longitude
 
 function getForecast(locationData) {
   console.log(locationData);
@@ -61,16 +68,20 @@ function getForecast(locationData) {
 function popData(weatherData) {
   removeContent();
   const statusIcon = weatherData.list[0].weather[0].icon;
+  const tempNow = weatherData.list[0].main.temp;
+  const windNow = weatherData.list[0].wind.speed;
+  const humidityNow = weatherData.list[0].main.humidity;
   const sIconUrl = 'http://openweathermap.org/img/wn/'+statusIcon+'.png';
   const imgIcon = '<img src='+sIconUrl+'>';
   locationName.append(weatherData.city.name + ' ' + '('+today+')' + '  ' + imgIcon);
-  temp.append('Temp: ' + weatherData.list[0].main.temp + " °F");
-  wind.append('Wind: ' + weatherData.list[0].wind.speed + " MPH");
-  humidity.append('Humidity: ' + weatherData.list[0].main.humidity + " %");
+  temp.append('Temp: ' + tempNow + " °F");
+  wind.append('Wind: ' + windNow + " MPH");
+  humidity.append('Humidity: ' + humidityNow + " %");
 
   for (let i = 0; i < 5; i++) {
   const weatherStatus = weatherData.list[i].weather[0].icon
   const iconUrl = 'http://openweathermap.org/img/wn/'+weatherStatus+'.png';
+  const icon = '<img src='+iconUrl+'>'
   console.log(iconUrl);
   const tempForecast = weatherData.list[i].main.temp;
   console.log(tempForecast);
@@ -78,7 +89,7 @@ function popData(weatherData) {
   console.log(windForecast);
   const humidForecast = weatherData.list[i].main.humidity;
   console.log(humidForecast);
-  days[i].append('<h4>' + fiveDay[i] + '<br> </h4> <img src='+iconUrl+'> <h5> <br> Temp: ' 
+  days[i].append('<h4>' + fiveDay[i] + '<br> </h4>'+ icon +'<h5> <br> Temp: ' 
   + tempForecast + ' °F <br> Wind: ' + windForecast + ' MPH <br> Humidity: ' 
   + humidForecast + ' % </h5>');
   $('#location').val('')
