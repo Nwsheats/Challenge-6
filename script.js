@@ -14,17 +14,15 @@ const day2 = $('#day-2');
 const day3 = $('#day-3');
 const day4 = $('#day-4');
 const day5 = $('#day-5');
-const date1 = $('#date-1');
-const date2 = $('#date-2');
-const date3 = $('#date-3');
-const date4 = $('#date-4');
-const date5 = $('#date-5');
+
+const today = moment().format("MM-DD-YYYY");
+const tomorrow = moment().add(1, 'days').format("MM-DD-YYYY");
+const dayAfterTomorrow = moment().add(2, 'days').format("MM-DD-YYYY");
+const dayAfterThat = moment().add(3, 'days').format("MM-DD-YYYY");
+const daysLater = moment().add(4, 'days').format("MM-DD-YYYY");
 
 const days = [day1, day2, day3, day4, day5];
-
-
-const today = moment().format("MM-DD-YYYY")
-const tomorrow = moment()
+const fiveDay = [today, tomorrow, dayAfterTomorrow, dayAfterThat, daysLater];
 
 
 function getApi(event) {
@@ -61,10 +59,12 @@ function getForecast(locationData) {
 }
 
 function popData(weatherData) {
+  removeContent();
   locationName.append(weatherData.city.name + ' ' + '('+today+')');
-  temp.append(weatherData.list[0].main.temp + " °F");
-  wind.append(weatherData.list[0].wind.speed + " MPH");
-  humidity.append(weatherData.list[0].main.humidity + " %");
+  temp.append('Temp: ' + weatherData.list[0].main.temp + " °F");
+  wind.append('Wind: ' + weatherData.list[0].wind.speed + " MPH");
+  humidity.append('Humidity: ' + weatherData.list[0].main.humidity + " %");
+
   for (let i = 0; i < 5; i++) {
   const tempForecast = weatherData.list[i].main.temp;
   console.log(tempForecast);
@@ -72,21 +72,19 @@ function popData(weatherData) {
   console.log(windForecast);
   const humidForecast = weatherData.list[i].main.humidity;
   console.log(humidForecast);
-  days[i].append('<h4>' + today + '</h4> <h5> <br>' + 'Temp: ' + tempForecast + ' °F <br>' + 
-  'Wind: ' + windForecast + ' MPH <br>' + 'Humidity: ' + humidForecast + ' % </h5>');
-
-  
-
-  // var moviePoster = document.createElement('img');
-
-  // movieTitle.textContent = data.Search[0].Title;
-  // moviePoster.src = data.Search[0].Poster;
-
-  // usersContainer.innerHTML = ""
-
-  // usersContainer.append(movieTitle);
-  // usersContainer.append(moviePoster);
+  days[i].append('<h4>' + fiveDay[i] + '</h4> <h5> <br> Temp: ' + tempForecast + ' °F <br> Wind: ' + windForecast + ' MPH <br> Humidity: ' + humidForecast + ' % </h5>');
+  $('#location').val('')
   }};
+
+
+function removeContent() {
+  locationName.empty();
+  temp.empty();
+  wind.empty();
+  humidity.empty();
+  for (let i = 0; i < 5; i++) {
+    days[i].empty();
+}};
 
 
 
