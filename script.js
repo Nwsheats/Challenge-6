@@ -24,6 +24,7 @@ const days = [day1, day2, day3, day4, day5];
 
 
 const today = moment().format("MM-DD-YYYY")
+const tomorrow = moment()
 
 
 function getApi(event) {
@@ -60,6 +61,10 @@ function getForecast(locationData) {
 }
 
 function popData(weatherData) {
+  locationName.append(weatherData.city.name + ' ' + '('+today+')');
+  temp.append(weatherData.list[0].main.temp + " °F");
+  wind.append(weatherData.list[0].wind.speed + " MPH");
+  humidity.append(weatherData.list[0].main.humidity + " %");
   for (let i = 0; i < 5; i++) {
   const tempForecast = weatherData.list[i].main.temp;
   console.log(tempForecast);
@@ -67,6 +72,22 @@ function popData(weatherData) {
   console.log(windForecast);
   const humidForecast = weatherData.list[i].main.humidity;
   console.log(humidForecast);
-}}
+  days[i].append('<h4>' + today + '</h4> <h5> <br>' + 'Temp: ' + tempForecast + ' °F <br>' + 
+  'Wind: ' + windForecast + ' MPH <br>' + 'Humidity: ' + humidForecast + ' % </h5>');
+
+  
+
+  // var moviePoster = document.createElement('img');
+
+  // movieTitle.textContent = data.Search[0].Title;
+  // moviePoster.src = data.Search[0].Poster;
+
+  // usersContainer.innerHTML = ""
+
+  // usersContainer.append(movieTitle);
+  // usersContainer.append(moviePoster);
+  }};
+
+
 
 button.on('click', getApi);
