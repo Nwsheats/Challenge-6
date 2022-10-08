@@ -27,9 +27,9 @@ const fiveDay = [today, tomorrow, dayAfterTomorrow, dayAfterThat, daysLater];
 
 function getApi(event) {
     event.preventDefault();
-    let locationSearch = $('#location').val();
+    const locationSearch = $('#location').val();
     console.log(locationSearch);
-    let geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationSearch+'&appid=379288c134bd33ff0ca6a16b87f06183';
+    const geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationSearch+'&appid=379288c134bd33ff0ca6a16b87f06183';
     console.log(geoCall);
     
     fetch(geoCall)
@@ -46,7 +46,7 @@ function getForecast(locationData) {
   console.log(locationData);
   const latitude = locationData[0].lat;
   const longitude = locationData[0].lon;
-  let apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=379288c134bd33ff0ca6a16b87f06183&units=imperial';
+  const apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=379288c134bd33ff0ca6a16b87f06183&units=imperial';
 
     fetch(apiCall)
     .then(function (response) {
@@ -60,19 +60,27 @@ function getForecast(locationData) {
 
 function popData(weatherData) {
   removeContent();
-  locationName.append(weatherData.city.name + ' ' + '('+today+')');
+  const statusIcon = weatherData.list[0].weather[0].icon;
+  const sIconUrl = 'http://openweathermap.org/img/wn/'+statusIcon+'.png';
+  const imgIcon = '<img src='+sIconUrl+'>';
+  locationName.append(weatherData.city.name + ' ' + '('+today+')' + '  ' + imgIcon);
   temp.append('Temp: ' + weatherData.list[0].main.temp + " °F");
   wind.append('Wind: ' + weatherData.list[0].wind.speed + " MPH");
   humidity.append('Humidity: ' + weatherData.list[0].main.humidity + " %");
 
   for (let i = 0; i < 5; i++) {
+  const weatherStatus = weatherData.list[i].weather[0].icon
+  const iconUrl = 'http://openweathermap.org/img/wn/'+weatherStatus+'.png';
+  console.log(iconUrl);
   const tempForecast = weatherData.list[i].main.temp;
   console.log(tempForecast);
   const windForecast = weatherData.list[i].wind.speed;
   console.log(windForecast);
   const humidForecast = weatherData.list[i].main.humidity;
   console.log(humidForecast);
-  days[i].append('<h4>' + fiveDay[i] + '</h4> <h5> <br> Temp: ' + tempForecast + ' °F <br> Wind: ' + windForecast + ' MPH <br> Humidity: ' + humidForecast + ' % </h5>');
+  days[i].append('<h4>' + fiveDay[i] + '<br> </h4> <img src='+iconUrl+'> <h5> <br> Temp: ' 
+  + tempForecast + ' °F <br> Wind: ' + windForecast + ' MPH <br> Humidity: ' 
+  + humidForecast + ' % </h5>');
   $('#location').val('')
   }};
 
