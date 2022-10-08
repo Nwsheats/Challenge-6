@@ -30,7 +30,7 @@ if (localStorage.getItem("search-history")) {
   for (let i = 0; i < storageArray.length; i++) {
     let searchBtn = document.createElement('button');
     searchBtn.textContent = storageArray[i];
-    searchBtn.setAttribute('class', 'inline-block btn btn-lg btn-info');
+    searchBtn.setAttribute('class', 'btn btn-lg btn-secondary w-100 my-2');
     recentList.append(searchBtn);
   }
 } else {
@@ -38,16 +38,14 @@ if (localStorage.getItem("search-history")) {
 }
 
 
-// $(window).load(function() {
-  
-// });
-
 
 // pulling geoCall into its own function, take in the name of a city and run
 // use event delegation for dynamically created list, delegate events onto parent UL and use
 // event.target to get its text value and plug that into geoCall function.
 
-function getApi(event) {
+// fix bug where empty strings are pulled into recent history
+
+function getStorage(event) {
     event.preventDefault();
     const locationSearch = $('#location').val();
     console.log(locationSearch);
@@ -59,11 +57,15 @@ function getApi(event) {
     for (let i = 0; i < locationArray.length; i++) {
       let searchBtn = document.createElement('button');
       searchBtn.textContent = locationArray[i];
-      searchBtn.setAttribute('class', 'btn btn-lg btn-info w-100 my-2');
+      searchBtn.setAttribute('class', 'btn btn-lg btn-secondary w-100 my-2');
       recentList.append(searchBtn);
-    }
+      getApi();
+    }};
 
-    const geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationSearch+'&appid=379288c134bd33ff0ca6a16b87f06183';
+
+function getApi() {
+    const locationInput = $('#location').val();
+    const geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationInput+'&appid=379288c134bd33ff0ca6a16b87f06183';
     console.log(geoCall);
     
     fetch(geoCall)
@@ -76,7 +78,7 @@ function getApi(event) {
       })
     }
 
-//local storage: locationSearch, latitude, and longitude
+//local storage: locationSearch
 
 // geoCall function
 
@@ -138,4 +140,4 @@ function removeContent() {
 
 
 
-button.on('click', getApi);
+button.on('click', getStorage);
