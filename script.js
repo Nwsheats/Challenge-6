@@ -23,20 +23,12 @@ const daysLater = moment().add(4, 'days').format("MM-DD-YYYY");
 
 const days = [day1, day2, day3, day4, day5];
 const fiveDay = [today, tomorrow, dayAfterTomorrow, dayAfterThat, daysLater];
-let storageArray = [];
 
 if (localStorage.getItem("search-history")) {
-  storageArray = JSON.parse(localStorage.getItem("search-history"))
-  for (let i = 0; i < storageArray.length; i++) {
-    let searchBtn = document.createElement('button');
-    searchBtn.textContent = storageArray[i];
-    searchBtn.setAttribute('class', 'btn btn-lg btn-secondary w-100 my-2');
-    recentList.append(searchBtn);
-  }
+  updateList()
 } else {
-  localStorage.setItem("search-history", JSON.stringify(storageArray));
+  localStorage.setItem("search-history", JSON.stringify([]));
 }
-
 
 
 // pulling geoCall into its own function, take in the name of a city and run
@@ -45,28 +37,36 @@ if (localStorage.getItem("search-history")) {
 
 // fix bug where empty strings are pulled into recent history
 
-function getStorage(event) {
+function callApi(event) {
     event.preventDefault();
-    const locationSearch = $('#location').val();
-    console.log(locationSearch);
-    let locationArray = JSON.parse(localStorage.getItem("search-history"));
-    locationArray.push(locationSearch)
-    console.log(locationArray);
-    localStorage.setItem("search-history", JSON.stringify(locationArray));
-    recentList.empty();
-    for (let i = 0; i < locationArray.length; i++) {
-      let searchBtn = document.createElement('button');
-      searchBtn.textContent = locationArray[i];
-      searchBtn.setAttribute('class', 'btn btn-lg btn-secondary w-100 my-2');
-      recentList.append(searchBtn);
       getApi();
-    }};
+    };
+
+function updateList(newCity) {
+  let locationArray = JSON.parse(localStorage.getItem("search-history"));
+  if (newCity && !locationArray.includes(newCity)) {
+    locationArray.push(newCity);
+  }
+  localStorage.setItem("search-history", JSON.stringify(locationArray));
+  recentList.empty();
+  for (let i = 0; i < locationArray.length; i++) {
+    let searchBtn = document.createElement('button');
+    searchBtn.textContent = locationArray[i];
+    searchBtn.setAttribute('class', 'btn btn-lg btn-secondary w-100 my-2');
+    recentList.append(searchBtn);
+    searchBtn.onclick = repurposeSearch
+}}
 
 
-function getApi() {
-    const locationInput = $('#location').val();
+function repurposeSearch(event) {
+    let cityText = event.target.textContent;
+    getApi(cityText);
+}
+
+
+function getApi(cityName) {
+    const locationInput = cityName || $('#location').val();
     const geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationInput+'&appid=379288c134bd33ff0ca6a16b87f06183';
-    console.log(geoCall);
     
     fetch(geoCall)
       .then(function (response) {
@@ -78,9 +78,6 @@ function getApi() {
       })
     }
 
-//local storage: locationSearch
-
-// geoCall function
 
 function getForecast(locationData) {
   console.log(locationData);
@@ -94,6 +91,7 @@ function getForecast(locationData) {
     })
     .then(function (data) {
     console.log(data);
+    updateList(locationData[0].name);
     popData(data);
     })
 }
@@ -115,13 +113,9 @@ function popData(weatherData) {
   const weatherStatus = weatherData.list[i].weather[0].icon
   const iconUrl = 'http://openweathermap.org/img/wn/'+weatherStatus+'.png';
   const icon = '<img src='+iconUrl+'>'
-  console.log(iconUrl);
   const tempForecast = weatherData.list[i].main.temp;
-  console.log(tempForecast);
   const windForecast = weatherData.list[i].wind.speed;
-  console.log(windForecast);
   const humidForecast = weatherData.list[i].main.humidity;
-  console.log(humidForecast);
   days[i].append('<h4>' + fiveDay[i] + '<br> </h4>'+ icon +'<h5> <br> Temp: ' 
   + tempForecast + ' °F <br> Wind: ' + windForecast + ' MPH <br> Humidity: ' 
   + humidForecast + ' % </h5>');
@@ -140,4 +134,4 @@ function removeContent() {
 
 
 
-button.on('click', getStorage);
+button.on('click', callApi);
