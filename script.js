@@ -23,17 +23,46 @@ const daysLater = moment().add(4, 'days').format("MM-DD-YYYY");
 
 const days = [day1, day2, day3, day4, day5];
 const fiveDay = [today, tomorrow, dayAfterTomorrow, dayAfterThat, daysLater];
-
 let storageArray = [];
+
+if (localStorage.getItem("search-history")) {
+  storageArray = JSON.parse(localStorage.getItem("search-history"))
+  for (let i = 0; i < storageArray.length; i++) {
+    let searchBtn = document.createElement('button');
+    searchBtn.textContent = storageArray[i];
+    searchBtn.setAttribute('class', 'inline-block btn btn-lg btn-info');
+    recentList.append(searchBtn);
+  }
+} else {
+  localStorage.setItem("search-history", JSON.stringify(storageArray));
+}
+
 
 // $(window).load(function() {
   
 // });
 
+
+// pulling geoCall into its own function, take in the name of a city and run
+// use event delegation for dynamically created list, delegate events onto parent UL and use
+// event.target to get its text value and plug that into geoCall function.
+
 function getApi(event) {
     event.preventDefault();
     const locationSearch = $('#location').val();
     console.log(locationSearch);
+    let locationArray = JSON.parse(localStorage.getItem("search-history"));
+    locationArray.push(locationSearch)
+    console.log(locationArray);
+    localStorage.setItem("search-history", JSON.stringify(locationArray));
+    recentList.empty();
+    for (let i = 0; i < locationArray.length; i++) {
+      let searchBtn = document.createElement('button');
+      searchBtn.textContent = locationArray[i];
+      searchBtn.setAttribute('class', 'inline-block btn btn-lg btn-info');
+      recentList.append(searchBtn);
+    }
+
     const geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationSearch+'&appid=379288c134bd33ff0ca6a16b87f06183';
     console.log(geoCall);
     
@@ -48,6 +77,8 @@ function getApi(event) {
     }
 
 //local storage: locationSearch, latitude, and longitude
+
+// geoCall function
 
 function getForecast(locationData) {
   console.log(locationData);
