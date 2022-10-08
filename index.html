@@ -12,13 +12,13 @@
 <body>
     <nav class="navbar navbar-dark bg-dark d-flex">
         <div class="row w-100 justify-content-center">
-        <h1 class="navbar-brand text-center">Weather Dashboard</h1>
+        <h1 class="text-center text-white">Weather Dashboard</h1>
         </div>
       </nav>
     <main class="d-flex">
     <aside class="w-25">
         <div class="d-flex row">
-        <div class="col-9 text-center m-4" id="data-submit">
+        <div class="col text-center m-2" id="data-submit">
             <h2 class="display-5 text-white">Search for a City: </h2>
             <input type="text" class="w-100" id="location"></input>
             <button class="btn btn-primary w-100 my-3" id="btn">Search</button>
@@ -31,11 +31,11 @@
         </div>
     </aside>
     <section class="w-100 column">
-        <div class="container border w-25 my-3" id="location-today">
+        <div class="container border w-25 my-3 bg-primary" id="location-today">
             <h3 class="text-white" id="location-name"></h3>
-            <h5 class="text-white" id="temperature">Temp: </h5>
-            <h5 class="text-white" id="wind">Wind: </h5>
-            <h5 class="text-white" id="humidity">Humidity: </h5>
+            <h5 class="text-white" id="temperature">Temp: --</h5>
+            <h5 class="text-white" id="wind">Wind: --</h5>
+            <h5 class="text-white" id="humidity">Humidity: --</h5>
         </div>
         <section class="w-100 h-100 my-4 column" id="forecast">
             <div class="container h-100">
