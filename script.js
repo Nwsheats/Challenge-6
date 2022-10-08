@@ -59,7 +59,7 @@ function getApi(event) {
     for (let i = 0; i < locationArray.length; i++) {
       let searchBtn = document.createElement('button');
       searchBtn.textContent = locationArray[i];
-      searchBtn.setAttribute('class', 'inline-block btn btn-lg btn-info');
+      searchBtn.setAttribute('class', 'btn btn-lg btn-info w-100 my-2');
       recentList.append(searchBtn);
     }
 
