@@ -1,9 +1,7 @@
-console.log()
+// List of consts used
+
 const button = $('#btn');
-const dataFormEl = document.getElementById('data-submit');
-const recentSearch = $('#recent-search');
 const recentList = $('#recent-list');
-const locationToday = $('#location-today');
 const locationName = $('#location-name');
 const temp = $('#temperature');
 const wind = $('#wind');
@@ -15,14 +13,21 @@ const day3 = $('#day-3');
 const day4 = $('#day-4');
 const day5 = $('#day-5');
 
+// consts involving moment for each day of the forecast
+
 const today = moment().format("MM-DD-YYYY");
 const tomorrow = moment().add(1, 'days').format("MM-DD-YYYY");
 const dayAfterTomorrow = moment().add(2, 'days').format("MM-DD-YYYY");
 const dayAfterThat = moment().add(3, 'days').format("MM-DD-YYYY");
 const daysLater = moment().add(4, 'days').format("MM-DD-YYYY");
 
+// consts making the moment variables and the day variables into arrays
+
 const days = [day1, day2, day3, day4, day5];
 const fiveDay = [today, tomorrow, dayAfterTomorrow, dayAfterThat, daysLater];
+
+// on page load, if there is anything in Local Storage, run the updateList function or otherwise
+// set an empty array into local storage.
 
 if (localStorage.getItem("search-history")) {
   updateList()
@@ -30,17 +35,18 @@ if (localStorage.getItem("search-history")) {
   localStorage.setItem("search-history", JSON.stringify([]));
 }
 
-
-// pulling geoCall into its own function, take in the name of a city and run
-// use event delegation for dynamically created list, delegate events onto parent UL and use
-// event.target to get its text value and plug that into geoCall function.
-
-// fix bug where empty strings are pulled into recent history
+// a function used when the button is clicked to run the getApi function
 
 function callApi(event) {
     event.preventDefault();
       getApi();
     };
+
+// a function that makes a variable called locationArray, fills it with info from localStorage, pushes
+// newCity if newCity exists and locationArray does not have it, sets locationArray into local Storage,
+// clears the list of recent search buttons, then creates the list again based on locationArray using
+// a for loop.
+// when the buttons generated are clicked, they run a function called 'repurposeSearch'
 
 function updateList(newCity) {
   let locationArray = JSON.parse(localStorage.getItem("search-history"));
@@ -57,12 +63,21 @@ function updateList(newCity) {
     searchBtn.onclick = repurposeSearch
 }}
 
+// passing along from the previous function, this one takes the textContent from the buttons,
+// makes them into a variable, and then uses that variable to run the getApi function.
 
 function repurposeSearch(event) {
     let cityText = event.target.textContent;
     getApi(cityText);
 }
 
+// getApi is the function for the Geolocation API to turn a name of a city into latitude and
+// longitude coordinates.
+// locationInput is set to cityName (the name of the city on the recently-searched button) OR
+// the value of what was entered on the original input.
+
+// locationInput is put into the Geolocation API url and then Fetch is used to get the data.
+// getForecast function is called with the data as a parameter.
 
 function getApi(cityName) {
     const locationInput = cityName || $('#location').val();
@@ -73,14 +88,17 @@ function getApi(cityName) {
         return response.json();
       })
       .then(function (data) {
-        console.log(data);
         getForecast(data);
       })
     }
 
 
+// getForecast is a function that uses the data to assign latitude and longitude to variables,
+// then use those variables in the Open Weather Map API Url to get the necessary location info
+// updateList function is called with the name of the location.
+// data is passed to popData function, which is called.
+
 function getForecast(locationData) {
-  console.log(locationData);
   const latitude = locationData[0].lat;
   const longitude = locationData[0].lon;
   const apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=379288c134bd33ff0ca6a16b87f06183&units=imperial';
@@ -90,11 +108,18 @@ function getForecast(locationData) {
     return response.json();
     })
     .then(function (data) {
-    console.log(data);
     updateList(locationData[0].name);
     popData(data);
     })
 }
+
+// popData takes the weatherData, runs the removeContent function, then defines a lot of the
+// necessary data into variables so that they can be appended onto the correct elements.
+
+// a for loop is needed for the 5 day forecast, where i is used for weatheData, as well as the
+// days and fiveDay arrays above.
+
+// the input value is cleared at the end
 
 function popData(weatherData) {
   removeContent();
@@ -122,6 +147,8 @@ function popData(weatherData) {
   $('#location').val('')
   }};
 
+// removeContent takes all the values that may have been populated previously with popData and 
+// clears them.
 
 function removeContent() {
   locationName.empty();
@@ -132,6 +159,6 @@ function removeContent() {
     days[i].empty();
 }};
 
-
+// the on-click listener for the Search button that calls the callApi function to start the process.
 
 button.on('click', callApi);
