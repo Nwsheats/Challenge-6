@@ -40,6 +40,7 @@ The following image shows the web application's appearance and functionality:
 
 ## Deployed URL
 
+https://nwsheats.github.io/Weather-Forecast-Dashboard/
 
 ## Git Repository Link
 

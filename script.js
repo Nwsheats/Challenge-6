@@ -81,7 +81,7 @@ function repurposeSearch(event) {
 
 function getApi(cityName) {
     const locationInput = cityName || $('#location').val();
-    const geoCall = 'http://api.openweathermap.org/geo/1.0/direct?q='+locationInput+'&appid=379288c134bd33ff0ca6a16b87f06183';
+    const geoCall = 'https://api.openweathermap.org/geo/1.0/direct?q='+locationInput+'&appid=379288c134bd33ff0ca6a16b87f06183';
     
     fetch(geoCall)
       .then(function (response) {
@@ -101,7 +101,7 @@ function getApi(cityName) {
 function getForecast(locationData) {
   const latitude = locationData[0].lat;
   const longitude = locationData[0].lon;
-  const apiCall = 'http://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=379288c134bd33ff0ca6a16b87f06183&units=imperial';
+  const apiCall = 'https://api.openweathermap.org/data/2.5/forecast?lat='+latitude+'&lon='+longitude+'&appid=379288c134bd33ff0ca6a16b87f06183&units=imperial';
 
     fetch(apiCall)
     .then(function (response) {
