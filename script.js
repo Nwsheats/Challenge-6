@@ -127,7 +127,7 @@ function popData(weatherData) {
   const tempNow = weatherData.list[0].main.temp;
   const windNow = weatherData.list[0].wind.speed;
   const humidityNow = weatherData.list[0].main.humidity;
-  const sIconUrl = 'http://openweathermap.org/img/wn/'+statusIcon+'.png';
+  const sIconUrl = 'https://openweathermap.org/img/wn/'+statusIcon+'.png';
   const imgIcon = '<img src='+sIconUrl+'>';
   locationName.append(weatherData.city.name + ' ' + '('+today+')' + '  ' + imgIcon);
   temp.append('Temp: ' + tempNow + " °F");
@@ -136,7 +136,7 @@ function popData(weatherData) {
 
   for (let i = 0; i < 5; i++) {
   const weatherStatus = weatherData.list[i].weather[0].icon
-  const iconUrl = 'http://openweathermap.org/img/wn/'+weatherStatus+'.png';
+  const iconUrl = 'https://openweathermap.org/img/wn/'+weatherStatus+'.png';
   const icon = '<img src='+iconUrl+'>'
   const tempForecast = weatherData.list[i].main.temp;
   const windForecast = weatherData.list[i].wind.speed;
